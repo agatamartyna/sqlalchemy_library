@@ -26,12 +26,12 @@ def author_books(author_id):
     form = BookForm()
     if request.method == "POST":
         title = form.data['title']
-        flag=0
+        flag = 0
         for book in Book.query.all():
             if book.title == title:
                 author.books.append(book)
                 db.session.commit()
-                flag=1
+                flag = 1
                 break
             else:
                 continue
@@ -41,18 +41,7 @@ def author_books(author_id):
             author.books.append(book)
             db.session.commit()
 
-
         return redirect(url_for('.author_books', author_id=author_id))
 
-    return render_template("author.html", author=author, books=books, form=form)
-
-
-
-
-
-
-
-
-
-
-
+    return render_template("author.html",
+                           author=author, books=books, form=form)
