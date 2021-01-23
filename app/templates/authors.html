@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Autorzy</title>
+    <style>
+        table, th, tr, td {border: 1px solid black;}
+    </style>
+</head>
+<body>
+<h1>Lista autorów</h1>
+<table>
+    <thead>
+    <th>id</th>
+    <th>autor</th>
+    </thead>
+    {% for author in authors %}
+    <tr>
+        <td><a href="/authors/{{ loop.index }}">{{ author.id }}</a></td>
+        <td>{{ author.name }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<div>
+    <h2> Dodaj nowego autora </h2>
+    <form method="POST" action="/authors/">
+        <table>
+                <tr>
+                    <th>Imię i nazwisko</th>
+                    <td>{{ form.name }}</td>
+                </tr>`
+        </table>
+        <br>
+        <input type="submit" value="Dodaj">
+    </form>
+</div>
+</body>
+</html>
