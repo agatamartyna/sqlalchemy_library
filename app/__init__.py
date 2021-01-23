@@ -12,8 +12,3 @@ migrate = Migrate(app, db)
 meta = MetaData()
 
 from app import routes, models
-
-
-
-
-
