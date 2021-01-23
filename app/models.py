@@ -42,6 +42,5 @@ class Borrow(db.Model):
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
     in_stock = db.Column(db.Boolean, unique=True, default=False)
 
-
     def __str__(self):
         return f"<Borrow {self.in_stock}>"
