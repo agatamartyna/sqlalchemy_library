@@ -40,7 +40,7 @@ class Borrow(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
-    in_stock = db.Column(db.Boolean, unique=True, default=False)
+    in_stock = db.Column(db.Boolean, default=False)
 
     def __str__(self):
         return f"<Borrow {self.in_stock}>"
