@@ -2,38 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Książki autora</title>
+    <title>Lista wypożyczeń</title>
     <style>
         table, th, tr, td {border: 1px solid black;}
     </style>
 </head>
-<h2>Książki autora: {{author.name}}</h2>
+<h2>Wypożyczenia: {{book.title}} </h2>
 <table>
     <thead>
     <th>id</th>
-    <th>tytuł</th>
+    <th>status</th>
+    <th>data (począwszy od)</th>
     </thead>
-    {% for book in books %}
+    {% for borrow in borrows %}
     <tr>
-        <td><a href="/books/{{ loop.index }}">{{ book.id }}</a></td>
-        <td>{{ book.title }}</td>
+        <td>{{ borrow.id }}</td>
+        <td>{% if borrow.in_stock==False %} Wypożyczona {% elif borrow.in_stock==True %} Dostępna {% endif %}</td>
+        <td>{{ (borrow.date).strftime("%x") }} {{ (borrow.date).strftime("%X") }}</td>
     </tr>
     {% endfor %}
 </table>
 <div>
-    <h2> Dodaj nową książkę tego autora </h2>
+    <h2> Zmień status</h2>
     {% if error != None %}<p><strong>{{ error }}</strong></p>{% endif %}
-    <form method="POST" action="/authors/{{ author.id }}">
+    <form method="POST" action="/books/{{ book.id }}">
         <table>
                 <tr>
-                    <th>Tytuł</th>
-                    <td>{{ form.title }}</td>
+                    <th>Status</th>
+                    <td>{{ form.in_stock }}</td>
                 </tr>
         </table>
         <br>
         <input type="submit" value="Dodaj">
     </form>
 </div>
+<br><br>
 <h3><a href="/books/">Wróć do listy książek</a></h3>
 <h3><a href="/authors/">Wróć do listy autorów</a></h3>
 </html>

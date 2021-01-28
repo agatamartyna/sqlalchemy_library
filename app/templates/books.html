@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Książki</title>
+    <style>
+        table, th, tr, td {border: 1px solid black;}
+    </style>
+</head>
+<body>
+<h1>Lista książek</h1>
+<table>
+    <thead>
+    <th>id</th>
+    <th>tytuł</th>
+    <th>autor(zy)</th>
+    </thead>
+    {% for book in books %}
+    <tr>
+        <td><a href="/books/{{ loop.index }}">{{ book.id }}</a></td>
+        <td>{{ book.title }}</td>
+        <td>{% for author in book.authors %}{{ author.name }} {% endfor %}</td>
+    </tr>
+    {% endfor %}
+</table>
+<div>
+    <h2> Dodaj nową książkę </h2>
+    {% if error!=None %}<p><strong>{{error}}</strong></p>{% endif %}
+    <form method="POST" action="/books/">
+        {{ form.hidden_tag() }}
+        <table>
+            {% for field in form if field.widget.input_type != 'hidden' %}
+                <tr>
+                    <th>{{field.label}}</th>
+                    <td>{{ field }}</td>
+                </tr>`
+            {% endfor %}
+        </table>
+        <br>
+        <input type="submit" value="Dodaj">
+    </form>
+    <br>
+    <h3><a href="/authors/">Wróć do listy autorów</a></h3>
+</div>
+</body>
+</html>
