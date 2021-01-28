@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
+from wtforms import StringField, RadioField
 from wtforms.validators import DataRequired
 
 
@@ -8,4 +8,10 @@ class AuthorForm(FlaskForm):
 
 
 class BookForm(FlaskForm):
-    title = StringField("title", validators=[DataRequired()])
+    title = StringField("tytuł", validators=[DataRequired()])
+    author1 = StringField("autor 1", validators=[DataRequired()])
+    author2 = StringField("autor 2")
+    author3 = StringField("autor 3")
+
+class BorrowForm(FlaskForm):
+    in_stock = RadioField("Status", choices = ["Wypożyczam", "Oddaję"],  validators=[DataRequired()])
