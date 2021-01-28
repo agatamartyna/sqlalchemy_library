@@ -13,5 +13,10 @@ class BookForm(FlaskForm):
     author2 = StringField("autor 2")
     author3 = StringField("autor 3")
 
+
 class BorrowForm(FlaskForm):
-    in_stock = RadioField("Status", choices = ["Wypożyczam", "Oddaję"],  validators=[DataRequired()])
+    in_stock = RadioField(
+        "Status",
+        choices=["Wypożyczam", "Oddaję"],
+        validators=[DataRequired()]
+    )
