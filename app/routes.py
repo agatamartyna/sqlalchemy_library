@@ -11,14 +11,17 @@ def authors_list():
     authors_names = [author.name for author in authors]
     error = None
     if request.method == "POST":
+        # add new author
         if form.name.data not in authors_names:
             name = form.data['name']
             author = Author(name=name)
             db.session.add(author)
             db.session.commit()
         else:
+            # Proviso for existing string:
             error = "Taki autor już istnieje w bazie. " \
-                    "Dodaj do nazwiska np. datę urodzenia, aby ich odróżnić"
+                    "Dodaj do nazwiska np. datę urodzenia " \
+                    "lub inicjał, aby ich odróżnić"
             return render_template("authors.html",
                                    authors=authors, form=form, error=error)
 
@@ -37,21 +40,32 @@ def author_books(author_id):
     error = None
     if request.method == "POST":
         title = form.data['title']
+        """An author does not typically write two books of the same title,
+        if they do, they must be distinguished manually"""
         if title in all_titles:
             book = [book for book in Book.query.filter_by(title=title)][0]
             if author in book.authors:
-                error = "Tak książka jest już przypisana do tego autora."
+                error = "Ta książka już istnieje w bazie."
                 return render_template("author.html",
                                        author=author,
                                        books=books,
                                        form=form,
                                        error=error)
+            # title exists, but the other author is missing
             else:
                 author.books.append(book)
                 db.session.commit()
+        # most typical case: just enter some new title
         else:
             book = Book(title=title)
+            """set default value for a new book on in_stock,
+            there could be choice like in the /books/ routing
+            (just to show you I can do it, enter a new book borrowed,
+            which is silly) but have merci,
+            I'm almost dead of this exi."""
+            borrow = Borrow(in_stock=True, book=book)
             db.session.add(book)
+            db.session.add(borrow)
             author.books.append(book)
             db.session.commit()
 
@@ -70,11 +84,15 @@ def books_list():
     error = None
     if request.method == "POST":
         title = form.data['title']
-        authors = [form.data['author1'],
-                   form.data['author2'], form.data['author3']]
+        authors = [form.data['author1'], form.data['author2'],
+                   form.data['author3']]
+        # set default value for a new book on 'in_stock'
+        status = form.data['status']
         if title not in [book.title for book in books]:
             book = Book(title=title)
+            borrow = Borrow(in_stock=status, book=book)
             db.session.add(book)
+            db.session.add(borrow)
             db.session.commit()
             for author in authors:
                 if author == '':
@@ -119,6 +137,7 @@ def book_borrowings(book_id):
                 borrow = Borrow(in_stock=False, book=book)
                 db.session.add(borrow)
                 db.session.commit()
+
             else:
                 error = 'Nie możesz wypożyczyć tej książki'
                 return render_template("book.html",
