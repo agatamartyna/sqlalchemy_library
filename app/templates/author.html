@@ -12,11 +12,13 @@
     <thead>
     <th>id</th>
     <th>tytuł</th>
+    <th>status</th>
     </thead>
     {% for book in books %}
     <tr>
         <td><a href="/books/{{ loop.index }}">{{ book.id }}</a></td>
         <td>{{ book.title }}</td>
+        <td>{%if (book.borrows[-1]).in_stock==True %} Dostępna {% else %} Wypożyczona {%endif%}</td>
     </tr>
     {% endfor %}
 </table>
