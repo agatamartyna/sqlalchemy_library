@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, RadioField
+from wtforms import StringField, RadioField, BooleanField, SelectField
 from wtforms.validators import DataRequired
+from app.models import Author
 
 
 class AuthorForm(FlaskForm):
@@ -9,9 +10,19 @@ class AuthorForm(FlaskForm):
 
 class BookForm(FlaskForm):
     title = StringField("tytuł", validators=[DataRequired()])
-    author1 = StringField("autor 1", validators=[DataRequired()])
-    author2 = StringField("autor 2")
-    author3 = StringField("autor 3")
+    author1 = SelectField("Autor 1")
+    author2 = SelectField("Autor 2")
+    author3 = SelectField("Autor 3")
+    status = BooleanField("status", default=True)
+
+    def __init__(self):
+        super(BookForm, self).__init__()
+        self.author1.choices = [''] +\
+                               [author.name for author in Author.query.all()]
+        self.author2.choices = [''] +\
+                               [author.name for author in Author.query.all()]
+        self.author3.choices = [''] +\
+                               [author.name for author in Author.query.all()]
 
 
 class BorrowForm(FlaskForm):
