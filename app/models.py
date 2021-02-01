@@ -18,7 +18,7 @@ class Author(db.Model):
                             backref=db.backref('author', lazy=True))
 
     def __str__(self):
-        return f"<Author {self.name}>"
+        return f"{self.name}"
 
 
 class Book(db.Model):
