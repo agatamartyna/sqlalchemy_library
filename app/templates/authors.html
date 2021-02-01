@@ -23,7 +23,7 @@
 </table>
 <div>
     <h2> Dodaj nowego autora </h2>
-    {% if error != None %}<p><strong>{{ error }}</strong></p>{% endif %}
+    {% if error != None %}<p style="color: red"><strong>{{ error }}</strong></p>{% endif %}
     <form method="POST" action="/authors/">
         <table>
                 <tr>
